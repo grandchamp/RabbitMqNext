@@ -6,16 +6,16 @@ namespace RabbitMqNext.Internals
 	using System.Collections.Generic;
 	using System.Text;
 
-	internal class AmqpPrimitivesWriter
+	public class AmqpPrimitivesWriter
 	{
 		private const string LogSource = "AmqpPrimitivesWriter";
 
-		internal const int BufferSize = 1024 * 128;
+		public const int BufferSize = 1024 * 128;
 
-		internal InternalBigEndianWriter _writer;
+		public InternalBigEndianWriter _writer;
 		
 		private readonly ArrayPool<byte> _bufferPool;
-		internal readonly ObjectPoolArray<ReusableTempWriter> _memStreamPool;
+		public readonly ObjectPoolArray<ReusableTempWriter> _memStreamPool;
 
 		private readonly byte[] _smallBuffer = new byte[300];
 

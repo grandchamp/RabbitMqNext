@@ -7,7 +7,7 @@
 
 	public class TestProgram
 	{
-		public static void Main()
+		public static void Main2()
 		{
 			var totalTasks = 100000;
 			var tasks = new TaskSlim<bool>[totalTasks];

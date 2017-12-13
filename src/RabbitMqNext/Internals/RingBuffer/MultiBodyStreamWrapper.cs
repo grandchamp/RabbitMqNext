@@ -28,7 +28,7 @@
 			return new MemoryStream2(BufferUtil.Copy(this, bodySize));
 		}
 
-		internal void ConsumeTilEnd()
+		public void ConsumeTilEnd()
 		{
 			while (_currentFrameLenLeft != 0 || _remainingTotalBody != 0)
 			{
@@ -48,7 +48,7 @@
 			}
 		}
 
-		internal void ReadAllInto(byte[] buffer, int offset, int bodySize)
+		public void ReadAllInto(byte[] buffer, int offset, int bodySize)
 		{
 			var totalRead = 0;
 			while (bodySize - totalRead != 0)

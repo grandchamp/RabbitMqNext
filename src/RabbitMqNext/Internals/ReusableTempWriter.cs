@@ -3,11 +3,11 @@ namespace RabbitMqNext.Internals
 	using System;
 	using System.Buffers;
 
-	internal class ReusableTempWriter : IDisposable
+	public class ReusableTempWriter : IDisposable
 	{
-		internal MemoryStreamSlim _memoryStream;
-		internal InternalBigEndianWriter _innerWriter;
-		internal AmqpPrimitivesWriter _writer2;
+		public MemoryStreamSlim _memoryStream;
+		public InternalBigEndianWriter _innerWriter;
+		public AmqpPrimitivesWriter _writer2;
 
 		public ReusableTempWriter(ArrayPool<byte> bufferPool, ObjectPoolArray<ReusableTempWriter> memStreamPool)
 		{

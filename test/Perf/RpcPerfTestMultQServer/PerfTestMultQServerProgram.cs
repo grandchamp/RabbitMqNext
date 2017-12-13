@@ -127,7 +127,7 @@
 		}
 	}
 
-	internal class Consumer : IBasicConsumer
+	public class Consumer : IBasicConsumer
 	{
 		private readonly IModel _channel;
 

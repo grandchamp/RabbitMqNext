@@ -17,12 +17,12 @@
 	{
 		private const string LogSource = "AmqpqIOBase";
 
-		internal readonly ConcurrentQueue<CommandToSend> _awaitingReplyQueue;
-		internal bool _isClosed, _isDisposed;
-		internal readonly ushort _channelNum;
+		public readonly ConcurrentQueue<CommandToSend> _awaitingReplyQueue;
+		public bool _isClosed, _isDisposed;
+		public readonly ushort _channelNum;
 
 		// if not null, it's the error that closed the channel or connection
-		internal AmqpError _lastError;
+		public AmqpError _lastError;
 
 		protected AmqpIOBase(ushort channelNum)
 		{
@@ -30,7 +30,7 @@
 			_awaitingReplyQueue = new ConcurrentQueue<CommandToSend>();
 		}
 
-		internal List<Func<AmqpError, Task>> ErrorCallbacks;
+		public List<Func<AmqpError, Task>> ErrorCallbacks;
 
 		public bool IsClosed { get { return _isClosed; } }
 
@@ -47,14 +47,14 @@
 
 		protected abstract void InternalDispose();
 
-		internal abstract Task HandleFrame(int classMethodId);
+		public abstract Task HandleFrame(int classMethodId);
 
-		internal abstract Task SendCloseConfirmation();
+		public abstract Task SendCloseConfirmation();
 
-		internal abstract Task SendStartClose();
+		public abstract Task SendStartClose();
 
 		// To be use in case of exceptions on our end. Close everything asap
-		internal virtual async Task InitiateAbruptClose(Exception reason)
+		public virtual async Task InitiateAbruptClose(Exception reason)
 		{
 			if (_isClosed) return;
 			Thread.MemoryBarrier();
@@ -69,7 +69,7 @@
 			this.Dispose();
 		}
 
-		internal virtual async Task<bool> InitiateCleanClose(bool initiatedByServer, AmqpError error)
+		public virtual async Task<bool> InitiateCleanClose(bool initiatedByServer, AmqpError error)
 		{
 			if (_isClosed) return false;
 			Thread.MemoryBarrier();
@@ -93,7 +93,7 @@
 			return true;
 		}
 
-		internal void HandReplyToAwaitingQueue(int classMethodId)
+		public void HandReplyToAwaitingQueue(int classMethodId)
 		{
 			CommandToSend sent;
 
@@ -110,7 +110,7 @@
 
 		// A disconnect may be expected coz we send a connection close, etc.. 
 		// or it may be something abruptal
-		internal void HandleDisconnect()
+		public void HandleDisconnect()
 		{
 			if (_isClosed) return; // we have initiated the close
 
@@ -121,7 +121,7 @@
 			DrainPending(_lastError);
 		}
 
-		internal Task<bool> HandleCloseMethodFromServer(AmqpError error) 
+		public Task<bool> HandleCloseMethodFromServer(AmqpError error) 
 		{
 			_lastError = error;
 			return InitiateCleanClose(true, error);
@@ -163,7 +163,7 @@
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal static void SetException<T>(TaskCompletionSource<T> tcs, AmqpError error, int classMethodId)
+		public static void SetException<T>(TaskCompletionSource<T> tcs, AmqpError error, int classMethodId)
 		{
 			if (tcs == null) return;
 			if (error != null)
@@ -185,7 +185,7 @@
 			}
 		}
 
-//		internal static void SetException(TaskSlim tcs, AmqpError error, int classMethodId)
+//		public static void SetException(TaskSlim tcs, AmqpError error, int classMethodId)
 //		{
 //			if (tcs == null) return;
 //			if (error != null)

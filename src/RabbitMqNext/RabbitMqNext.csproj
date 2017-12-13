@@ -1,173 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48FF9289-A49D-48E9-AF6C-89CB85E934D0}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RabbitMqNext</RootNamespace>
-    <AssemblyName>RabbitMqNext</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\repos\Extensions\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>4b868131</NuGetPackageImportStamp>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>RabbitMqNext</PackageId>
+    <Version>2.0.0</Version>
+    <Company>Clear CTVM - https://www.clear.com.br</Company>
+    <Description>A dangerously advanced amqp/rabbitmq client</Description>
+    <Copyright>Copyright © hamilton verissimo (hammett) 2015,2016</Copyright>
+    <Authors>hammett</Authors>
+    <PackageLicenseUrl>https://github.com/d-collab/RabbitMqNext/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/d-collab/RabbitMqNext</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/d-collab/RabbitMqNext</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>amqp rabbitmq-client dotnet</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;ASSERT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Debug\RabbitMqNext.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Debug\netstandard2.0\RabbitMqNext.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;ASSERT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\RabbitMqNext.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="System.Buffers" Version="4.4.0" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AmqpQueueInfo.cs" />
-    <Compile Include="Amqp\AmqpConstants.cs" />
-    <Compile Include="Amqp\Types\AmqpTimestamp.cs" />
-    <Compile Include="Amqp\BasicProperties.cs" />
-    <Compile Include="Buffers\ObjectPool.cs" />
-    <Compile Include="Buffers\ObjectPoolArray.cs" />
-    <Compile Include="ChannelApiExtensions.cs" />
-    <Compile Include="ChannelOptions.cs" />
-    <Compile Include="ConnectionFactory.cs" />
-    <Compile Include="IChannel.cs" />
-    <Compile Include="IConnection.cs" />
-    <Compile Include="Internals\CommandToSendExtensions.cs" />
-    <Compile Include="Internals\RingBuffer\EmptyStream.cs" />
-    <Compile Include="Internals\RingBuffer\MemoryStream2.cs" />
-    <Compile Include="Internals\RingBuffer\MultiBodyStreamWrapper.cs" />
-    <Compile Include="Internals\RingBuffer\BaseLightStream.cs" />
-    <Compile Include="Internals\RingBuffer\Padding.cs" />
-    <Compile Include="Internals\RingBuffer\RingBufferPositionMarker.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\RingBuffer\SocketStreamWriterAdapter.cs" />
-    <Compile Include="Internals\RingBuffer\ThreadFactory.cs" />
-    <Compile Include="Io\AmqpIOBase.cs" />
-    <Compile Include="Channel.cs" />
-    <Compile Include="Io\ChannelIO.cs" />
-    <Compile Include="Connection.cs" />
-    <Compile Include="Io\ConnectionIO.cs" />
-    <Compile Include="ConsumeMode.cs" />
-    <Compile Include="Internals\SocketHolder.cs" />
-    <Compile Include="LogAdapter.cs" />
-    <Compile Include="MConsole\BindingInfo.cs" />
-    <Compile Include="MConsole\ExchangeInfo.cs" />
-    <Compile Include="MConsole\QueueInfo.cs" />
-    <Compile Include="MConsole\RestConsole.cs" />
-    <Compile Include="MConsole\UserInfo.cs" />
-    <Compile Include="MConsole\UserVHostPermissionsInfo.cs" />
-    <Compile Include="MConsole\VHostInfo.cs" />
-    <Compile Include="IQueueConsumer.cs" />
-    <Compile Include="Recovery\ExchangeBindRecovery.cs" />
-    <Compile Include="Recovery\QueueBoundRecovery.cs" />
-    <Compile Include="Recovery\QueueConsumerRecovery.cs" />
-    <Compile Include="Recovery\QueueDeclaredRecovery.cs" />
-    <Compile Include="Recovery\RecoveryEnabledChannel.cs" />
-    <Compile Include="Recovery\RecoveryEnabledConnection.cs" />
-    <Compile Include="Recovery\ExchangeDeclaredRecovery.cs" />
-    <Compile Include="Recovery\QosSettingRecovery.cs" />
-    <Compile Include="Rpc\RpcHelperApiExtensions.cs" />
-    <Compile Include="Rpc\BaseRpcHelper.cs" />
-    <Compile Include="Rpc\BaseRpcHelper_Of_T.cs" />
-    <Compile Include="Rpc\RpcAggregateHelper.cs" />
-    <Compile Include="Rpc\RpcHelper.cs" />
-    <Compile Include="TplExtensions\BaseTaskSlim.cs" />
-    <Compile Include="TplExtensions\SuppressFlow.cs" />
-    <Compile Include="TplExtensions\TaskExtensions.cs" />
-    <Compile Include="TplExtensions\TaskSlim.cs" />
-    <Compile Include="TplExtensions\TaskSlim_Of_T.cs" />
-    <Compile Include="TplExtensions\ValueTaskSlim.cs" />
-    <Compile Include="UndeliveredMessage.cs" />
-    <Compile Include="Internals\BufferUtil.cs" />
-    <Compile Include="Internals\AmqpClassMethodChannelLevelConstants.cs" />
-    <Compile Include="Internals\AmqpClassMethodConnectionLevelConstants.cs" />
-    <Compile Include="Internals\AmqpError.cs" />
-    <Compile Include="Internals\AmqpPrimitivesReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\AmqpPrimitivesWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\CommandToSend.cs" />
-    <Compile Include="Internals\CommonCommandSender.cs" />
-    <Compile Include="Internals\FrameProcessor.cs" />
-    <Compile Include="Internals\InternalBigEndianReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\InternalBigEndianWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\MemoryStreamSlim.cs" />
-    <Compile Include="Internals\Protocol.cs" />
-    <Compile Include="Internals\Protocol\AmqpChannelLevelFrameWriter.cs" />
-    <Compile Include="Internals\Protocol\AmqpConnectionFrameWriter.cs" />
-    <Compile Include="Internals\Protocol\FrameParameters.cs" />
-    <Compile Include="Internals\Protocol\FrameReader.cs" />
-    <Compile Include="Internals\Protocol\FrameReader_ChannelLevel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\Protocol\FrameReader_ConnectionLevel.cs" />
-    <Compile Include="Internals\ReusableTempWriter.cs" />
-    <Compile Include="Internals\RingBuffer\BaseRingBuffer.cs" />
-    <Compile Include="Internals\RingBuffer\Locks\AutoResetSuperSlimLock.cs" />
-    <Compile Include="Internals\RingBuffer\ByteRingBuffer.cs" />
-    <Compile Include="Internals\RingBuffer\RingBufferStreamAdapter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Internals\RingBuffer\Utils.cs" />
-    <Compile Include="MessageDelivery.cs" />
-    <Compile Include="Internals\MessagesPendingConfirmationKeeper.cs" />
-    <Compile Include="Properties\AsmInfo.cs" />
-    <Compile Include="Utils\Asserts.cs" />
+    <Folder Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

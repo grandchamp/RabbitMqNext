@@ -8,7 +8,7 @@ namespace RabbitMqNext.Internals
 	using RingBuffer;
 
 
-	internal class AmqpPrimitivesReader
+	public class AmqpPrimitivesReader
 	{
 		private readonly ArrayPool<byte> _bufferPool = ArrayPool<byte>.Create(131072, 20); // typical max frame = 131072 
 		private readonly byte[] _smallBuffer = new byte[300];

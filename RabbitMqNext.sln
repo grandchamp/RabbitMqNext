@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{37FFB38A-985A-42A7-B98B-D5ECDDAF4478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMqNext", "src\RabbitMqNext\RabbitMqNext.csproj", "{48FF9289-A49D-48E9-AF6C-89CB85E934D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMqNext", "src\RabbitMqNext\RabbitMqNext.csproj", "{48FF9289-A49D-48E9-AF6C-89CB85E934D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7228278D-07F5-4C95-8612-0EF23CB85E75}"
 EndProject
@@ -152,5 +152,8 @@ Global
 		{19FE5B62-6135-4823-8391-C6E95392D732} = {BEF1F0AC-A2D7-4874-A2A8-588A8F991A97}
 		{77BD26B8-8B4B-4895-8A60-935ED6FCCB3C} = {BEF1F0AC-A2D7-4874-A2A8-588A8F991A97}
 		{D2DCF4DC-9B61-4518-9FAE-F2D30B6301EA} = {BEF1F0AC-A2D7-4874-A2A8-588A8F991A97}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD4BCCDC-839A-4B15-8EE7-482AA67F5444}
 	EndGlobalSection
 EndGlobal

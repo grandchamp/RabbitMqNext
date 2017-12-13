@@ -4,7 +4,7 @@ namespace RabbitMqNext.Internals
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
-	internal partial class FrameReader
+	public partial class FrameReader
 	{
 		public void Read_ConnectionStart(Action<byte, byte, IDictionary<string, object>, string, string> continuation)
 		{

@@ -24,3 +24,5 @@ _ReSharper*
 
 packages/
 
+/.vs/RabbitMqNext/v15/Server/sqlite3
+/.vs/config

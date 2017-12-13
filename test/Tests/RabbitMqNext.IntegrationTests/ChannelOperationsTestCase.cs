@@ -164,7 +164,7 @@ namespace RabbitMqNext.IntegrationTests
 					"queue_direct", "", true, exclusive: true, arguments: null, waitConfirmation: true).Result;
 			})
 			.InnerExceptions.Should()
-							.Contain(e => e.Message == "Error: Server returned error: ACCESS_REFUSED - queue 'queue_direct' in vhost 'clear_test' in exclusive use [code: 403 class: 60 method: 20]");
+							.Contain(e => e.Message == $"Error: Server returned error: ACCESS_REFUSED - queue 'queue_direct' in vhost '{_vhost}' in exclusive use [code: 403 class: 60 method: 20]");
 		}
 
 		[Test]

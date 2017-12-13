@@ -30,7 +30,7 @@ namespace RabbitMqNext.Internals
 
 		public static WriterDelegate ExchangeDeclare(string exchange, string type, 
 			bool durable, bool autoDelete, 
-			IDictionary<string, object> arguments, bool @internal, bool passive, bool waitConfirmation)
+			IDictionary<string, object> arguments, bool @public, bool passive, bool waitConfirmation)
 		{
 			return (writer, channel, classId, methodId, args) =>
 			{
@@ -45,7 +45,7 @@ namespace RabbitMqNext.Internals
 					w.WriteUShort(0); // reserved
 					w.WriteShortstr(exchange);
 					w.WriteShortstr(type);
-					w.WriteBits(passive, durable, autoDelete, @internal, !waitConfirmation);
+					w.WriteBits(passive, durable, autoDelete, @public, !waitConfirmation);
 					w.WriteTable(arguments);
 				});
 			};
@@ -208,7 +208,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal static void InternalBasicAck(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
+		public static void InternalBasicAck(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
 		{
 			var b_args = args as FrameParameters.BasicAckArgs;
 
@@ -227,7 +227,7 @@ namespace RabbitMqNext.Internals
 			};
 		}
 
-		internal static void InternalBasicNAck(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
+		public static void InternalBasicNAck(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
 		{
 			var b_args = args as FrameParameters.BasicNAckArgs;
 
@@ -243,7 +243,7 @@ namespace RabbitMqNext.Internals
 			writer.WriteOctet(AmqpConstants.FrameEnd);
 		}
 
-		internal static void InternalBufferedBasicPublish(AmqpPrimitivesWriter writerX, ushort channel, ushort classId, ushort methodId,
+		public static void InternalBufferedBasicPublish(AmqpPrimitivesWriter writerX, ushort channel, ushort classId, ushort methodId,
 			object args)
 		{
 			var memStream = writerX._memStreamPool.GetObject();
@@ -262,7 +262,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal static void InternalBasicPublish(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
+		public static void InternalBasicPublish(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object args)
 		{
 			var basicPub = args as FrameParameters.BasicPublishArgs;
 

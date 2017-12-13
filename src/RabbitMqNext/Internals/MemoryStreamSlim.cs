@@ -6,7 +6,7 @@ namespace RabbitMqNext.Internals
 	using System.Threading;
 	using System.Threading.Tasks;
 
-	internal class MemoryStreamSlim : Stream
+	public class MemoryStreamSlim : Stream
 	{
 		private readonly ArrayPool<byte> _pool;
 		private readonly int _arraySize;

@@ -262,7 +262,7 @@
 		}
 	}
 
-	internal class DelegateConsumer : IBasicConsumer
+	public class DelegateConsumer : IBasicConsumer
 	{
 		private readonly Action<ulong, IBasicProperties, byte[]> _action;
 

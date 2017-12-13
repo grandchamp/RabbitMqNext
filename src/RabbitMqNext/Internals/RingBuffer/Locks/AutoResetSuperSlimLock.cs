@@ -16,19 +16,19 @@ namespace RabbitMqNext.Internals.RingBuffer.Locks
 		private struct LockState
 		{
 			private PaddingForInt32 _pad0;
-			internal volatile int _state;
+			public volatile int _state;
 			private PaddingForInt32 _pad1;
 		}
 
 		private LockState _lockState;
 
-		internal const int OperationalStateMask = 0x4000;  // 0100 0000 0000 0000
-		internal const int OperationalStatePos = 14;
-		internal const int SignalledStateMask = 0x8000;    // 1000 0000 0000 0000
-		internal const int SignalledStatePos = 15;
-		internal const int NumWaitersStateMask = 0xFF;     // 0000 0000 1111 1111
-		internal const int NumWaitersStatePos = 0;
-		internal const int WaiterMax = 255; // 0xFF
+		public const int OperationalStateMask = 0x4000;  // 0100 0000 0000 0000
+		public const int OperationalStatePos = 14;
+		public const int SignalledStateMask = 0x8000;    // 1000 0000 0000 0000
+		public const int SignalledStatePos = 15;
+		public const int NumWaitersStateMask = 0xFF;     // 0000 0000 1111 1111
+		public const int NumWaitersStatePos = 0;
+		public const int WaiterMax = 255; // 0xFF
 
 		private readonly object _lock = new object();
 		
@@ -162,7 +162,7 @@ namespace RabbitMqNext.Internals.RingBuffer.Locks
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void AtomicChange(int val, int shifts, int mask)
+		public void AtomicChange(int val, int shifts, int mask)
 		{
 			var spinWait = new SpinWait();
 			while (true)
@@ -186,7 +186,7 @@ namespace RabbitMqNext.Internals.RingBuffer.Locks
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal bool TryAtomicXor(int val, int shifts, int mask)
+		public bool TryAtomicXor(int val, int shifts, int mask)
 		{
 			var curState = _lockState._state;
 
@@ -245,7 +245,7 @@ namespace RabbitMqNext.Internals.RingBuffer.Locks
 			return CheckForIsSetAndResetIfTrue();
 		}
 
-		internal int Waiters
+		public int Waiters
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get
@@ -260,7 +260,7 @@ namespace RabbitMqNext.Internals.RingBuffer.Locks
 			}
 		}
 
-		internal bool Operational
+		public bool Operational
 		{
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get

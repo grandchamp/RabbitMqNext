@@ -31,7 +31,7 @@ namespace RabbitMqNext.Internals.RingBuffer
 		}
 	}
 
-	internal class ThreadUtils
+	public class ThreadUtils
 	{
 		[MethodImpl]
 		public static bool IsReadFrameThread()

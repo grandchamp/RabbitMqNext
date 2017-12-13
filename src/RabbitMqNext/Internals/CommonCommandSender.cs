@@ -10,10 +10,10 @@ namespace RabbitMqNext.Internals
 	/// </summary>
 	public abstract class CommonCommandSender
 	{
-		internal AmqpError _lastError; // volative writes through other means
+		public AmqpError _lastError; // volative writes through other means
 
 //		private volatile int _closed = 0;
-		internal readonly ConcurrentQueue<CommandToSend> _awaitingReplyQueue;
+		public readonly ConcurrentQueue<CommandToSend> _awaitingReplyQueue;
 
 		private volatile bool _closed;
 
@@ -22,7 +22,7 @@ namespace RabbitMqNext.Internals
 			_awaitingReplyQueue = new ConcurrentQueue<CommandToSend>();
 		}
 
-		internal abstract Task HandleFrame(int classMethodId);
+		public abstract Task HandleFrame(int classMethodId);
 
 		protected void HandleCloseMethod(ushort replyCode, string replyText, ushort classId, ushort methodId)
 		{
@@ -33,7 +33,7 @@ namespace RabbitMqNext.Internals
 //			return Task.CompletedTask;
 		}
 
-		internal abstract void InitiateCleanClose(bool startedByServer, ushort offendingClassId, ushort offendingMethodId);
+		public abstract void InitiateCleanClose(bool startedByServer, ushort offendingClassId, ushort offendingMethodId);
 
 //		private override Task HandleCloseMethod(ushort channel, ushort replyCode, string replyText, ushort classId, ushort methodId)
 //		{
@@ -57,6 +57,6 @@ namespace RabbitMqNext.Internals
 
 		public bool Closed { get { return _closed; } }
 
-		internal abstract void InternalDispose();
+		public abstract void InternalDispose();
 	}
 }

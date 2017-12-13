@@ -48,7 +48,7 @@ namespace RabbitMqNext.Internals.RingBuffer
 		{
 			var lenToRead = Math.Min(count, (int)_gate.length);
 			if (lenToRead == 0) return 0; // user cannot read ahead of its window into the real buffer
-			var read = _ringBuffer.Read(buffer, offset, lenToRead, fillBuffer: true, fromGate: _gate);
+			var read = _ringBuffer.Read(buffer, offset, lenToRead, fillBuffer: true/*, fromGate: _gate*/);
 			return read;
 		}
 

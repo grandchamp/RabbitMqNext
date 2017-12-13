@@ -2,14 +2,14 @@ namespace RabbitMqNext.Internals
 {
 	using System;
 
-	internal interface IFrameContentWriter
+	public interface IFrameContentWriter
 	{
 		void Write(AmqpPrimitivesWriter amqpWriter, ushort channel, ushort classId, ushort methodId, object optionalArg);
 	}
 
-	internal static class FrameParameters
+	public static class FrameParameters
 	{
-		internal class CloseParams
+		public class CloseParams
 		{
 			public ushort replyCode;
 			public string replyText;
@@ -20,7 +20,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal class BasicAckArgs : IFrameContentWriter
+		public class BasicAckArgs : IFrameContentWriter
 		{
 			public ulong deliveryTag;
 			public bool multiple;
@@ -36,7 +36,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal class BasicNAckArgs : IFrameContentWriter
+		public class BasicNAckArgs : IFrameContentWriter
 		{
 			public ulong deliveryTag;
 			public bool multiple;
@@ -53,7 +53,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal class BasicPublishArgs : IFrameContentWriter
+		public class BasicPublishArgs : IFrameContentWriter
 		{
 			private readonly Action<BasicPublishArgs> _recycler;
 
@@ -73,7 +73,7 @@ namespace RabbitMqNext.Internals
 			public BasicProperties properties;
 			public ArraySegment<byte> buffer;
 
-			internal void Done()
+			public void Done()
 			{
 				if (_recycler != null)
 					_recycler(this);

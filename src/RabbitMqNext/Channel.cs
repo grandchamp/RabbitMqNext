@@ -15,7 +15,7 @@
 	using RabbitMqNext.Io;
 	using Utils;
 
-	public sealed class Channel : IChannel, IInternalChannel
+	public sealed class Channel : IChannel, IpublicChannel
 	{
 		private const string LogSource = "Channel";
 
@@ -23,10 +23,10 @@
 
 		private readonly CancellationToken _cancellationToken;
 
-		internal readonly ChannelIO _io;
-		internal readonly ChannelOptions _options;
-		internal readonly TaskScheduler _schedulerToDeliverMessages;
-		internal MessagesPendingConfirmationKeeper _confirmationKeeper;
+		public readonly ChannelIO _io;
+		public readonly ChannelOptions _options;
+		public readonly TaskScheduler _schedulerToDeliverMessages;
+		public MessagesPendingConfirmationKeeper _confirmationKeeper;
 
 		private readonly ConcurrentDictionary<string, BasicConsumerSubscriptionInfo> _consumerSubscriptions;
 		private readonly ObjectPoolArray<BasicProperties> _propertiesPool;
@@ -54,7 +54,7 @@
 			_propertiesPool = new ObjectPoolArray<BasicProperties>(() => new BasicProperties(isFrozen: false, reusable: true), 100, preInitialize: false);
 		}
 
-		#region IInternalChannel
+		#region IpublicChannel
 
 		private ulong _deliveryTagOffset, _maxDelTagSeen;
 
@@ -339,7 +339,7 @@
 			this._io.Dispose();
 		}
 
-		internal void DispatchDeliveredMessage(
+		public void DispatchDeliveredMessage(
 			string consumerTag, ulong deliveryTag, bool redelivered,
 			string exchange, string routingKey, int bodySize,
 			BasicProperties properties, BaseLightStream lightStream)
@@ -503,7 +503,7 @@
 				LogAdapter.LogDebug(LogSource, "Consumer exiting. Tag " + consumer.ConsumerTag);
 		}
 
-		internal void DispatchBasicReturn(ushort replyCode, string replyText, 
+		public void DispatchBasicReturn(ushort replyCode, string replyText, 
 			string exchange, string routingKey, int bodySize,
 			BasicProperties properties, BaseLightStream ringBufferStream)
 		{
@@ -534,7 +534,7 @@
 			}
 		}
 
-		internal Task<RpcHelper> CreateRpcHelper(IChannel targetChannel, ConsumeMode mode, int? timeoutInMs, int maxConcurrentCalls,
+		public Task<RpcHelper> CreateRpcHelper(IChannel targetChannel, ConsumeMode mode, int? timeoutInMs, int maxConcurrentCalls,
 			bool captureContext)
 		{
 			EnsureOpen();
@@ -544,7 +544,7 @@
 			return RpcHelper.Create(targetChannel, maxConcurrentCalls, mode, captureContext, timeoutInMs);
 		}
 
-		internal Task<RpcAggregateHelper> CreateRpcAggregateHelper(IChannel targetChannel, ConsumeMode mode, int? timeoutInMs, int maxConcurrentCalls,
+		public Task<RpcAggregateHelper> CreateRpcAggregateHelper(IChannel targetChannel, ConsumeMode mode, int? timeoutInMs, int maxConcurrentCalls,
 			bool captureContext)
 		{
 			EnsureOpen();
@@ -554,7 +554,7 @@
 			return RpcAggregateHelper.Create(targetChannel, maxConcurrentCalls, mode, captureContext, timeoutInMs);
 		}
 
-		internal void ProcessAcks(ulong deliveryTags, bool multiple)
+		public void ProcessAcks(ulong deliveryTags, bool multiple)
 		{
 			if (_confirmationKeeper != null)
 			{
@@ -562,7 +562,7 @@
 			}
 		}
 
-		internal void ProcessNAcks(ulong deliveryTags, bool multiple, bool requeue)
+		public void ProcessNAcks(ulong deliveryTags, bool multiple, bool requeue)
 		{
 			if (_confirmationKeeper != null)
 			{
@@ -570,7 +570,7 @@
 			}
 		}
 
-		internal void HandleChannelFlow(bool isActive)
+		public void HandleChannelFlow(bool isActive)
 		{
 			if (isActive)
 				BlockChannel("ChannelFlow received");
@@ -580,7 +580,7 @@
 			_io.__SendChannelFlowOk(isActive);
 		}
 
-		internal void HandleCancelConsumerByServer(string consumerTag, byte noWait)
+		public void HandleCancelConsumerByServer(string consumerTag, byte noWait)
 		{
 			BasicConsumerSubscriptionInfo subscription;
 			if (_consumerSubscriptions.TryRemove(consumerTag, out subscription))
@@ -594,7 +594,7 @@
 			}
 		}
 
-		internal Task EnableConfirmation(int maxunconfirmedMessages)
+		public Task EnableConfirmation(int maxunconfirmedMessages)
 		{
 			if (_confirmationKeeper != null) throw new Exception("Already set");
 		
@@ -603,12 +603,12 @@
 			return _io.__SendConfirmSelect(noWait: false);
 		}
 
-		internal Task Open()
+		public Task Open()
 		{
 			return _io.Open();
 		}
 
-		internal void GenericRecycler<T>(T item, ObjectPoolArray<T> pool) where T : class
+		public void GenericRecycler<T>(T item, ObjectPoolArray<T> pool) where T : class
 		{
 			pool.PutObject(item);
 		}
@@ -666,7 +666,7 @@
 			if (!added) throw new Exception("Consumer already exists for tag " + consumerTag);
 		}
 
-		internal void DrainPendingIfNeeded(AmqpError error)
+		public void DrainPendingIfNeeded(AmqpError error)
 		{
 			if (this._confirmationKeeper != null)
 			{
@@ -680,7 +680,7 @@
 			if (_io._isClosed) throw new ObjectDisposedException("Channel disposed");
 		}
 
-		internal void CopyDelegates(Channel replacementChannel)
+		public void CopyDelegates(Channel replacementChannel)
 		{
 			replacementChannel.MessageUndeliveredHandler = this.MessageUndeliveredHandler;
 
@@ -705,13 +705,13 @@
 			}
 		}
 
-		internal void ComputeOffsets(Channel replacementChannel)
+		public void ComputeOffsets(Channel replacementChannel)
 		{
 			replacementChannel.DeliveryTagOffset = this.MaxDeliveryTagSeen + this.DeliveryTagOffset;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void BlockChannel(string reason)
+		public void BlockChannel(string reason)
 		{
 			_publishingBlockedWaiter.Reset();
 			Interlocked.Exchange(ref _publishingBlocked, 1);
@@ -727,7 +727,7 @@
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void UnblockChannel()
+		public void UnblockChannel()
 		{
 			Interlocked.Exchange(ref _publishingBlocked, 0);
 			_publishingBlockedWaiter.Set(); 
@@ -774,7 +774,7 @@
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void InternalUpdateDeliveryTag(ulong deliveryTag)
+		public void InternalUpdateDeliveryTag(ulong deliveryTag)
 		{
 			if (deliveryTag > _maxDelTagSeen)
 			{

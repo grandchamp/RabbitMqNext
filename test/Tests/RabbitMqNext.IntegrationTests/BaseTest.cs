@@ -2,10 +2,13 @@ namespace RabbitMqNext.IntegrationTests
 {
 	using System;
 	using System.Configuration;
+	using System.IO;
 	using System.Linq;
 	using System.Threading.Tasks;
 	using Io;
 	using MConsole;
+	using Microsoft.Extensions.Configuration;
+	using Microsoft.Extensions.Configuration.Json;
 	using NUnit.Framework;
 	using Recovery;
 
@@ -21,10 +24,17 @@ namespace RabbitMqNext.IntegrationTests
 			LogAdapter.ExtendedLogEnabled = true;
 			LogAdapter.ProtocolLevelLogEnabled = false;
 
-			_host = ConfigurationManager.AppSettings["rabbitmqserver"];
-			_vhost = ConfigurationManager.AppSettings["vhost"];
-			_username = ConfigurationManager.AppSettings["username"];
-			_password = ConfigurationManager.AppSettings["password"];
+			var configuration = new ConfigurationBuilder()
+										   .SetBasePath(Directory.GetCurrentDirectory())
+										   .AddJsonFile($"settings.json", optional: false, reloadOnChange: true)
+										   .Build();
+
+			var rabbitSettings = configuration.GetSection("RabbitMQSettings");
+			
+			_host = rabbitSettings["rabbitmqserver"];
+			_vhost = rabbitSettings["vhost"];
+			_username = rabbitSettings["username"];
+			_password = rabbitSettings["password"];
 		}
 
 		public async Task<IConnection> StartConnection(AutoRecoverySettings autoRecovery)

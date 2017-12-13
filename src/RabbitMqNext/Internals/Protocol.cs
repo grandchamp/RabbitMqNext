@@ -5,7 +5,7 @@ namespace RabbitMqNext.Internals
 
 	public static class Protocol
 	{
-		internal static readonly IDictionary<string, object> ClientProperties;
+		public static readonly IDictionary<string, object> ClientProperties;
 
 		static Protocol()
 		{

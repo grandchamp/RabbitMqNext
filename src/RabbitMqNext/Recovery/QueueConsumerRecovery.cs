@@ -6,7 +6,7 @@
 	using Internals;
 
 
-	internal class QueueConsumerRecovery
+	public class QueueConsumerRecovery
 	{
 		private readonly ConsumeMode _mode;
 		private readonly string _queue;

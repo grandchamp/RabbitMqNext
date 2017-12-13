@@ -112,28 +112,28 @@ namespace RabbitMqNext.TplExtensions
 			// protected set { AtomicChangeState(IsCompleteMask); }
 		}
 
-		internal bool HasContinuation
+		public bool HasContinuation
 		{
 			get { return (_state & HasContinuationSetMask) != 0; }
 			// ReSharper disable once ValueParameterNotUsed
 			set { AtomicChangeState(HasContinuationSetMask); }
 		}
 
-		internal bool RunContinuationAsync
+		public bool RunContinuationAsync
 		{
 			get { return (_state & RunContinuationAsyncMask) != 0; }
 			// ReSharper disable once ValueParameterNotUsed
 			set { AtomicChangeState(RunContinuationAsyncMask); }
 		}
 
-		internal bool HasException
+		public bool HasException
 		{
 			get { return (_state & CompletedWithExceptionState) != 0; }
 			// ReSharper disable once ValueParameterNotUsed
 			// set { AtomicChangeState(HasExceptionMask); }
 		}
 
-		internal void SetContinuation(Action continuation)
+		public void SetContinuation(Action continuation)
 		{
 			if (!HasContinuation)
 			{
@@ -202,7 +202,7 @@ namespace RabbitMqNext.TplExtensions
 		/// CaS version that preserves the state outside the mask
 		/// </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal bool CompareAndSwap(int newVal, int comparand, int shifts, int mask)
+		public bool CompareAndSwap(int newVal, int comparand, int shifts, int mask)
 		{
 			var curState = _state;
 

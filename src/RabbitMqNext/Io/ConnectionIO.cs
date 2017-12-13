@@ -13,12 +13,12 @@ namespace RabbitMqNext.Io
 	using Recovery;
 
 
-	public sealed class ConnectionIO : AmqpIOBase, IFrameProcessor
+	public class ConnectionIO : AmqpIOBase, IFrameProcessor
 	{
 		private const string LogSource = "ConnectionIO";
 
-		internal const string ReadFrameThreadNamePrefix = "ReadFramesLoop_";
-		internal const string WriteFrameThreadNamePrefix = "WriteFramesLoop_";
+		public const string ReadFrameThreadNamePrefix = "ReadFramesLoop_";
+		public const string WriteFrameThreadNamePrefix = "WriteFramesLoop_";
 
 		private static int _counter = 0;
 
@@ -29,11 +29,11 @@ namespace RabbitMqNext.Io
 		private readonly ConcurrentQueue<CommandToSend> _commandOutbox;
 		private readonly ObjectPoolArray<CommandToSend> _cmdToSendObjPool;
 		
-		internal readonly SocketHolder _socketHolder;
+		public readonly SocketHolder _socketHolder;
 
 		private readonly AmqpPrimitivesWriter _amqpWriter; // main output writer
 		private readonly AmqpPrimitivesReader _amqpReader; // main input reader
-		internal readonly FrameReader _frameReader; // interpreter of input
+		public readonly FrameReader _frameReader; // interpreter of input
 
 		private CancellationTokenSource _threadCancelSource;
 		private CancellationToken _threadCancelToken;
@@ -92,7 +92,7 @@ namespace RabbitMqNext.Io
 
 		#region AmqpIOBase overrides
 
-		internal override Task HandleFrame(int classMethodId)
+		public override Task HandleFrame(int classMethodId)
 		{
 			switch (classMethodId)
 			{
@@ -117,17 +117,17 @@ namespace RabbitMqNext.Io
 			return Task.CompletedTask;
 		}
 
-		internal override Task SendCloseConfirmation()
+		public override Task SendCloseConfirmation()
 		{
 			return __SendConnectionCloseOk();
 		}
 
-		internal override Task SendStartClose()
+		public override Task SendStartClose()
 		{
 			return __SendConnectionClose(AmqpConstants.ReplySuccess, "bye"); ;
 		}
 
-		internal void SendHeartbeat()
+		public void SendHeartbeat()
 		{
 			if (LogAdapter.ExtendedLogEnabled)
 				LogAdapter.LogDebug(LogSource, "Sending Heartbeat");
@@ -138,7 +138,7 @@ namespace RabbitMqNext.Io
 				optArg: AmqpConnectionFrameWriter.HeartbeatFrameWriter, immediately: false);
 		}
 
-		internal override async Task<bool> InitiateCleanClose(bool initiatedByServer, AmqpError error)
+		public override async Task<bool> InitiateCleanClose(bool initiatedByServer, AmqpError error)
 		{
 			if (!initiatedByServer)
 			{
@@ -173,7 +173,7 @@ namespace RabbitMqNext.Io
 			return true;
 		}
 
-		internal override Task InitiateAbruptClose(Exception reason)
+		public override Task InitiateAbruptClose(Exception reason)
 		{
 			_conn.CloseAllChannels(reason);
 
@@ -211,7 +211,7 @@ namespace RabbitMqNext.Io
 			base.HandleDisconnect(); // either a consequence of a close method, or unexpected disconnect
 		}
 
-		internal async Task<bool> InternalDoConnectSocket(string hostname, int port, bool throwOnError)
+		public async Task<bool> InternalDoConnectSocket(string hostname, int port, bool throwOnError)
 		{
 			var index = Interlocked.Increment(ref _counter);
 
@@ -269,7 +269,7 @@ namespace RabbitMqNext.Io
 			}
 		}
 
-		internal async Task<bool> Handshake(string vhost, string username, string password, string connectionName, ushort heartbeat, bool throwOnError)
+		public async Task<bool> Handshake(string vhost, string username, string password, string connectionName, ushort heartbeat, bool throwOnError)
 		{
 			await __SendGreeting().ConfigureAwait(false);
 			await __SendConnectionStartOk(username, password, connectionName).ConfigureAwait(false);
@@ -412,7 +412,7 @@ namespace RabbitMqNext.Io
 			}
 		}
 
-		internal void SendCommand(ushort channel, ushort classId, ushort methodId,
+		public void SendCommand(ushort channel, ushort classId, ushort methodId,
 			Action<AmqpPrimitivesWriter, ushort, ushort, ushort, object> commandWriter,
 			Action<ushort, int, AmqpError> reply, bool expectsReply, TaskCompletionSource<bool> tcs = null,
 			object optArg = null, Action prepare = null, bool immediately = false)

@@ -5,7 +5,7 @@
 	using System.Threading.Tasks;
 	using Internals;
 
-	internal class QueueDeclaredRecovery
+	public class QueueDeclaredRecovery
 	{
 		private readonly string _queue;
 		private readonly bool _passive;

@@ -4,7 +4,7 @@ namespace RabbitMqNext.Internals
 	using System.Threading;
 	using System.Threading.Tasks;
 
-	internal partial class FrameReader
+	public partial class FrameReader
 	{
 		private InternalBigEndianReader _reader;
 		private AmqpPrimitivesReader _amqpReader;

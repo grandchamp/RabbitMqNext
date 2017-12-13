@@ -8,7 +8,7 @@
 	using Internals;
 	using Internals.RingBuffer;
 
-	internal enum RecoveryAction
+	public enum RecoveryAction
 	{
 		NoAction,
 		WillReconnect
@@ -26,7 +26,7 @@
 		private int _inRecovery;
 		private bool _disposed;
 
-		internal readonly Connection _connection;
+		public readonly Connection _connection;
 
 		private readonly CancellationTokenSource _recoveryCancellationTokenSource;
 
@@ -62,7 +62,7 @@
 			_recoveryCancellationTokenSource = new CancellationTokenSource();
 		}
 
-		internal RecoveryEnabledChannel CreateChannelRecovery(Channel channel)
+		public RecoveryEnabledChannel CreateChannelRecovery(Channel channel)
 		{
 			var channelRecovery = new RecoveryEnabledChannel(channel, _recoverySettings);
 			lock (_channelRecoveries)
@@ -79,7 +79,7 @@
 			if (LogAdapter.IsDebugEnabled) LogAdapter.LogDebug(LogSource, "Connected to " + hostname);
 		}
 
-		internal RecoveryAction NotifyAbruptClose(Exception reason)
+		public RecoveryAction NotifyAbruptClose(Exception reason)
 		{
 			if (_disableRecovery)
 			{
@@ -96,7 +96,7 @@
 			return RecoveryAction.WillReconnect;
 		}
 
-		internal RecoveryAction NotifyCloseByServer()
+		public RecoveryAction NotifyCloseByServer()
 		{
 			if (LogAdapter.IsDebugEnabled) LogAdapter.LogDebug(LogSource, "NotifyClosedByServer");
 
@@ -107,7 +107,7 @@
 			return RecoveryAction.WillReconnect;
 		}
 
-		internal void NotifyCloseByUser()
+		public void NotifyCloseByUser()
 		{
 			_disableRecovery = true;
 

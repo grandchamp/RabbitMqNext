@@ -10,7 +10,7 @@
 	using RabbitMqNext.Internals;
 
 	[DebuggerDisplay("CommandToSend Channel: {Channel} Class: {ClassId} Method: {MethodId} ExpectsReply: {ExpectsReply}")]
-	internal sealed class CommandToSend : IDisposable, ISupportInitialize
+	public sealed class CommandToSend : IDisposable, ISupportInitialize
 	{
 		private readonly Action<CommandToSend> _recycler;
 
@@ -34,7 +34,7 @@
 		private int _inUse = 0;
 
 //		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal void Prepare(ManualResetEventSlim whenReplyReceived)
+		public void Prepare(ManualResetEventSlim whenReplyReceived)
 		{
 			AssertCanBeUsed();
 

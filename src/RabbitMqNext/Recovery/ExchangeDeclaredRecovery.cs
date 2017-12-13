@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
-	internal class ExchangeDeclaredRecovery
+	public class ExchangeDeclaredRecovery
 	{
 		private readonly string _type;
 		private readonly bool _durable;

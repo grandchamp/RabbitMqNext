@@ -2,9 +2,11 @@
 {
 	using System;
 	using System.Configuration;
+	using System.IO;
 	using System.Text;
 	using System.Threading;
 	using System.Threading.Tasks;
+	using Microsoft.Extensions.Configuration;
 	using RabbitMqNext;
 	using RabbitMqNext.Recovery;
 
@@ -12,7 +14,7 @@
 	{
 		private static string _host, _vhost, _username, _password;
 
-		static void Main(string[] args)
+		static void Main2(string[] args)
 		{
 			// Scenarios to test:
 			// - idle connection 
@@ -37,12 +39,19 @@
 			// 2 - recover entities
 
 			LogAdapter.ExtendedLogEnabled = true;
-//			LogAdapter.ProtocolLevelLogEnabled = true;
+			//			LogAdapter.ProtocolLevelLogEnabled = true;
 
-			_host = ConfigurationManager.AppSettings["rabbitmqserver"];
-			_vhost = ConfigurationManager.AppSettings["vhost"];
-			_username = ConfigurationManager.AppSettings["username"];
-			_password = ConfigurationManager.AppSettings["password"];
+			var configuration = new ConfigurationBuilder()
+										   .SetBasePath(Directory.GetCurrentDirectory())
+										   .AddJsonFile($"settings.json", optional: false, reloadOnChange: true)
+										   .Build();
+
+			var rabbitSettings = configuration.GetSection("RabbitMQSettings");
+
+			_host = rabbitSettings["rabbitmqserver"];
+			_vhost = rabbitSettings["vhost"];
+			_username = rabbitSettings["username"];
+			_password = rabbitSettings["password"];
 
 			var t = new Task<bool>(() => Start().Result, TaskCreationOptions.LongRunning);
 			t.Start();

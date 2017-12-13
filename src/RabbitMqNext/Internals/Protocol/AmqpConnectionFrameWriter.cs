@@ -25,7 +25,7 @@
 			GreetingPayload[7] = 1; // revision
 		}
 
-		internal class HeartbeatFrame : IFrameContentWriter
+		public class HeartbeatFrame : IFrameContentWriter
 		{
 			public void Write(AmqpPrimitivesWriter writer, ushort channel, ushort classId, ushort methodId, object optionalArg)
 			{

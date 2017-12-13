@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
-	internal class ExchangeBindRecovery
+	public class ExchangeBindRecovery
 	{
 		private const string LogSource = "Recovery";
 

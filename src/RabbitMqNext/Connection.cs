@@ -16,7 +16,7 @@
 	{
 		private const string LogSource = "Connection";
 
-		internal readonly ConnectionIO _io;
+		public readonly ConnectionIO _io;
 
 		private Channel[] _channels; // 1-based index
 		
@@ -40,7 +40,7 @@
 
 		public event Action ConnectionUnblocked;
 
-		public RecoveryEnabledConnection Recovery { get; internal set; }
+		public RecoveryEnabledConnection Recovery { get; set; }
 
 		public void AddErrorCallback(Func<AmqpError, Task> errorCallback)
 		{
@@ -56,7 +56,7 @@
 			lock (_errorsCallbacks) _errorsCallbacks.Remove(errorCallback);
 		}
 
-		internal Task<bool> Connect(string hostname, string vhost, 
+		public Task<bool> Connect(string hostname, string vhost, 
 									string username, string password, 
 									int port, string connectionName, 
 									ushort heartbeat, bool throwOnError = true)
@@ -76,12 +76,12 @@
 			return InternalConnect(hostname);
 		}
 
-		internal void SetMaxChannels(int maxChannels)
+		public void SetMaxChannels(int maxChannels)
 		{
 			_channels = new Channel[maxChannels + 1];
 		}
 
-		internal async Task<bool> InternalConnect(string hostname, bool throwOnError = true)
+		public async Task<bool> InternalConnect(string hostname, bool throwOnError = true)
 		{
 			if (LogAdapter.ExtendedLogEnabled)
 				LogAdapter.LogDebug(LogSource, "Trying to connect to " + hostname);
@@ -129,7 +129,7 @@
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		internal ChannelIO ResolveChannel(ushort channel)
+		public ChannelIO ResolveChannel(ushort channel)
 		{
 			if (channel > _channels.Length)
 			{
@@ -147,7 +147,7 @@
 			return channelInst._io;
 		}
 
-		internal void CloseAllChannels(Exception reason)
+		public void CloseAllChannels(Exception reason)
 		{
 			if (_channels == null) return;
 			
@@ -159,7 +159,7 @@
 			}
 		}
 
-		internal void CloseAllChannels(bool initiatedByServer, AmqpError error)
+		public void CloseAllChannels(bool initiatedByServer, AmqpError error)
 		{
 			if (LogAdapter.IsDebugEnabled) LogAdapter.LogDebug(LogSource, "Closing all channels");
 
@@ -175,7 +175,7 @@
 			}
 		}
 
-		internal void Reset()
+		public void Reset()
 		{
 			// For now this only consists of reseting the channel array
 
@@ -185,7 +185,7 @@
 			}
 		}
 
-		internal async Task<IChannel> InternalCreateChannel(ChannelOptions options, int? desiredChannelNum, int maxunconfirmedMessages = 0, bool withPubConfirm = false)
+		public async Task<IChannel> InternalCreateChannel(ChannelOptions options, int? desiredChannelNum, int maxunconfirmedMessages = 0, bool withPubConfirm = false)
 		{
 			var channelNum = desiredChannelNum.HasValue ?
 				(ushort) desiredChannelNum.Value : 
@@ -214,7 +214,7 @@
 			}
 		}
 
-		internal RecoveryAction NotifyAbruptClose(Exception reason)
+		public RecoveryAction NotifyAbruptClose(Exception reason)
 		{
 			StopHeartbeatTimerIfNeeded();
 
@@ -224,7 +224,7 @@
 			return RecoveryAction.NoAction;
 		}
 
-		internal RecoveryAction NotifyClosedByServer()
+		public RecoveryAction NotifyClosedByServer()
 		{
 			StopHeartbeatTimerIfNeeded();
 
@@ -234,24 +234,24 @@
 			return RecoveryAction.NoAction;
 		}
 
-		internal void NotifyClosedByUser()
+		public void NotifyClosedByUser()
 		{
 			if (this.Recovery != null)
 				this.Recovery.NotifyCloseByUser();
 		}
 
-		internal class ConnectionInfo
+		public class ConnectionInfo
 		{
-			internal string hostname;
-			internal string vhost;
-			internal string username;
-			internal string password;
-			internal string connectionName;
-			internal int port;
-			internal ushort heartbeat;
+			public string hostname;
+			public string vhost;
+			public string username;
+			public string password;
+			public string connectionName;
+			public int port;
+			public ushort heartbeat;
 		}
 
-		internal void BlockAllChannels(string reason)
+		public void BlockAllChannels(string reason)
 		{
 			LogAdapter.LogWarn(LogSource, "Blocking all channels: " + reason);
 
@@ -268,7 +268,7 @@
 			}
 		}
 
-		internal void UnblockAllChannels()
+		public void UnblockAllChannels()
 		{
 			LogAdapter.LogWarn(LogSource, "Unblocking all channels");
 

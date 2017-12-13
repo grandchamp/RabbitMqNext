@@ -4,7 +4,7 @@
 
 
 	/// <summary>
-	/// Same as MemoryStream, but can surrender the internal buffer
+	/// Same as MemoryStream, but can surrender the public buffer
 	/// </summary>
 	public class MemoryStream2 : BaseLightStream
 	{

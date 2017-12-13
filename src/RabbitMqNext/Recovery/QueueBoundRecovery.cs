@@ -5,7 +5,7 @@
 	using System.Threading.Tasks;
 	using Internals;
 
-	internal class QueueBoundRecovery
+	public class QueueBoundRecovery
 	{
 		private readonly string _queue;
 		private readonly string _exchange;

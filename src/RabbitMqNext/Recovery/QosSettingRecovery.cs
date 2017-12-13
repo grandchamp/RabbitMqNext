@@ -2,7 +2,7 @@
 {
 	using System.Threading.Tasks;
 
-	internal struct QosSettingRecovery
+	public struct QosSettingRecovery
 	{
 		private readonly uint _prefetchSize;
 		private readonly ushort _prefetchCount;

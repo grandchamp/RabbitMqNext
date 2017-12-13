@@ -10,7 +10,7 @@ namespace RabbitMqNext.Internals
 	/// keeps a bounded list of messages pending confirmation, and releases then 
 	/// when a ack/nack is received (or shutdown)
 	/// </summary>
-	internal class MessagesPendingConfirmationKeeper
+	public class MessagesPendingConfirmationKeeper
 	{
 		private const string LogSource = "MessagesPendingConfirmationKeeper";
 

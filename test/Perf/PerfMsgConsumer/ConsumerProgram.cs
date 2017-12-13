@@ -98,7 +98,7 @@
 			return true;
 		}
 
-		internal static string ToStr(byte[] buffer)
+		public static string ToStr(byte[] buffer)
 		{
 			var sb = new StringBuilder(buffer.Length * 3);
 			for (int i = 0; i < buffer.Length; i++)

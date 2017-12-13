@@ -12,7 +12,7 @@ namespace RabbitMqNext.Io
 		private const string LogSource = "ChannelIO";
 
 		private readonly Channel _channel;
-		internal readonly ConnectionIO _connectionIo;
+		public readonly ConnectionIO _connectionIo;
 
 		private readonly ObjectPoolArray<FrameParameters.BasicPublishArgs> _basicPubArgsPool;
 
@@ -33,7 +33,7 @@ namespace RabbitMqNext.Io
 
 		#region AmqpIOBase overrides
 
-		internal override async Task HandleFrame(int classMethodId)
+		public override async Task HandleFrame(int classMethodId)
 		{
 			switch (classMethodId)
 			{
@@ -72,12 +72,12 @@ namespace RabbitMqNext.Io
 			}
 		}
 
-		internal override Task SendCloseConfirmation()
+		public override Task SendCloseConfirmation()
 		{
 			return __SendChannelCloseOk();
 		}
 
-		internal override Task SendStartClose()
+		public override Task SendStartClose()
 		{
 			return __SendChannelClose(AmqpConstants.ReplySuccess, "bye");
 		}
@@ -95,7 +95,7 @@ namespace RabbitMqNext.Io
 
 		#endregion
 
-		internal Task Open()
+		public Task Open()
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
@@ -123,7 +123,7 @@ namespace RabbitMqNext.Io
 
 		#region Commands writing methods
 
-		internal Task __SendChannelClose(ushort replyCode, string message)
+		public Task __SendChannelClose(ushort replyCode, string message)
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
@@ -151,7 +151,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __SendChannelCloseOk()
+		public Task __SendChannelCloseOk()
 		{
 			var tcs = new TaskCompletionSource<bool>();
 
@@ -163,7 +163,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal void __SendChannelFlowOk(bool isActive)
+		public void __SendChannelFlowOk(bool isActive)
 		{
 			_connectionIo.SendCommand(_channelNum, 20, 21,
 				AmqpChannelLevelFrameWriter.ChannelFlowOk(isActive),
@@ -171,7 +171,7 @@ namespace RabbitMqNext.Io
 				immediately: true);
 		}
 
-		internal Task __SendConfirmSelect(bool noWait)
+		public Task __SendConfirmSelect(bool noWait)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -194,7 +194,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __BasicQos(uint prefetchSize, ushort prefetchCount, bool global)
+		public Task __BasicQos(uint prefetchSize, ushort prefetchCount, bool global)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -217,7 +217,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal void __BasicAck(ulong deliveryTag, bool multiple)
+		public void __BasicAck(ulong deliveryTag, bool multiple)
 		{
 			var args = new FrameParameters.BasicAckArgs { deliveryTag = deliveryTag, multiple = multiple };
 
@@ -228,7 +228,7 @@ namespace RabbitMqNext.Io
 				optArg: args);
 		}
 
-		internal void __BasicNAck(ulong deliveryTag, bool multiple, bool requeue)
+		public void __BasicNAck(ulong deliveryTag, bool multiple, bool requeue)
 		{
 			var args = new FrameParameters.BasicNAckArgs() { deliveryTag = deliveryTag, multiple = multiple, requeue = requeue };
 
@@ -239,7 +239,7 @@ namespace RabbitMqNext.Io
 				optArg: args);
 		}
 
-		internal Task __ExchangeDeclare(string exchange, string type, bool durable, bool autoDelete,
+		public Task __ExchangeDeclare(string exchange, string type, bool durable, bool autoDelete,
 			IDictionary<string, object> arguments, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -268,7 +268,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task<AmqpQueueInfo> __QueueDeclare(string queue, bool passive, bool durable, bool exclusive, bool autoDelete,
+		public Task<AmqpQueueInfo> __QueueDeclare(string queue, bool passive, bool durable, bool exclusive, bool autoDelete,
 			IDictionary<string, object> arguments, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<AmqpQueueInfo>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -305,7 +305,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __QueueBind(string queue, string exchange, string routingKey, IDictionary<string, object> arguments, bool waitConfirmation)
+		public Task __QueueBind(string queue, string exchange, string routingKey, IDictionary<string, object> arguments, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -328,7 +328,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task<string> __BasicConsume(ConsumeMode mode, string queue, string consumerTag, bool withoutAcks, 
+		public Task<string> __BasicConsume(ConsumeMode mode, string queue, string consumerTag, bool withoutAcks, 
 											 bool exclusive, IDictionary<string, object> arguments,
 											 bool waitConfirmation, Action<string> confirmConsumerTag)
 		{
@@ -373,7 +373,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __BasicPublishTask(string exchange, string routingKey, bool mandatory,
+		public Task __BasicPublishTask(string exchange, string routingKey, bool mandatory,
 			BasicProperties properties, ArraySegment<byte> buffer)
 		{
 			if (properties == null)
@@ -388,7 +388,7 @@ namespace RabbitMqNext.Io
 			args.buffer = buffer;
 
 			_connectionIo.SendCommand(_channelNum, 60, 40,
-				null, // AmqpChannelLevelFrameWriter.InternalBasicPublish, 
+				null, // AmqpChannelLevelFrameWriter.publicBasicPublish, 
 				reply: (channel, classMethodId, error) =>
 				{
 					if (properties.IsReusable)
@@ -408,7 +408,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __BasicPublishConfirm(string exchange, string routingKey, bool mandatory, 
+		public Task __BasicPublishConfirm(string exchange, string routingKey, bool mandatory, 
 											BasicProperties properties, ArraySegment<byte> buffer)
 		{
 			if (properties == null)
@@ -429,7 +429,7 @@ namespace RabbitMqNext.Io
 			args.buffer = buffer;
 
 			_connectionIo.SendCommand(_channelNum, 60, 40,
-				null, // AmqpChannelLevelFrameWriter.InternalBasicPublish, 
+				null, // AmqpChannelLevelFrameWriter.publicBasicPublish, 
 				reply: (channel, classMethodId, error) =>
 				{
 					if (properties.IsReusable)
@@ -448,7 +448,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal void __BasicPublish(string exchange, string routingKey, bool mandatory, 
+		public void __BasicPublish(string exchange, string routingKey, bool mandatory, 
 									 BasicProperties properties, ArraySegment<byte> buffer)
 		{
 			if (properties == null) properties = BasicProperties.Empty;
@@ -473,7 +473,7 @@ namespace RabbitMqNext.Io
 				optArg: args);
 		}
 
-		internal Task __BasicCancel(string consumerTag, bool waitConfirmation)
+		public Task __BasicCancel(string consumerTag, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -502,7 +502,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __BasicRecover(bool requeue)
+		public Task __BasicRecover(bool requeue)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -525,7 +525,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __ExchangeBind(string source, string destination, string routingKey, 
+		public Task __ExchangeBind(string source, string destination, string routingKey, 
 									 IDictionary<string, object> arguments, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -554,7 +554,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __ExchangeUnbind(string source, string destination, string routingKey, IDictionary<string, object> arguments, bool waitConfirmation)
+		public Task __ExchangeUnbind(string source, string destination, string routingKey, IDictionary<string, object> arguments, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -582,7 +582,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __ExchangeDelete(string exchange, bool waitConfirmation)
+		public Task __ExchangeDelete(string exchange, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -609,7 +609,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task __QueueUnbind(string queue, string exchange, string routingKey, 
+		public Task __QueueUnbind(string queue, string exchange, string routingKey, 
 									IDictionary<string, object> arguments)
 		{
 			var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -638,7 +638,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task<uint> __QueueDelete(string queue, bool waitConfirmation)
+		public Task<uint> __QueueDelete(string queue, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -673,7 +673,7 @@ namespace RabbitMqNext.Io
 			return tcs.Task;
 		}
 
-		internal Task<uint> __QueuePurge(string queue, bool waitConfirmation)
+		public Task<uint> __QueuePurge(string queue, bool waitConfirmation)
 		{
 			var tcs = new TaskCompletionSource<uint>(TaskCreationOptions.RunContinuationsAsynchronously);
 

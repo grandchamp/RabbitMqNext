@@ -26,7 +26,7 @@ namespace RabbitMqNext.Internals
 		public InternalBigEndianWriter Writer;
 		public InternalBigEndianReader Reader;
 
-		internal int _socketIsClosed = 0;
+		public int _socketIsClosed = 0;
 		private int _index;
 
 		public SocketHolder()
@@ -122,7 +122,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal void WireStreams(CancellationToken cancellationToken, Action notifyWhenClosed)
+		public void WireStreams(CancellationToken cancellationToken, Action notifyWhenClosed)
 		{
 			_inputBuffer.SetSocket(_socket, OnSocketClosed);
 
@@ -141,7 +141,7 @@ namespace RabbitMqNext.Internals
 			// _socketProducer.OnNotifyClosed += OnSocketClosed;
 			Writer = new InternalBigEndianWriter(_socketConsumer.Write);
 			Reader = new InternalBigEndianReader(_inputRingBufferStream);
-			// Reader = new InternalBigEndianReader(new SocketStreamReaderAdapter(_socket));
+			// Reader = new publicBigEndianReader(new SocketStreamReaderAdapter(_socket));
 		}
 
 		private void OnSocketClosed(Socket sender, Exception ex)
@@ -152,7 +152,7 @@ namespace RabbitMqNext.Internals
 			}
 		}
 
-		internal void StopAndBlockBuffers()
+		public void StopAndBlockBuffers()
 		{
 			_inputBuffer.StopAndBlockBuffers();
 		}

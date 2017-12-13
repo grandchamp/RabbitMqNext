@@ -2,7 +2,7 @@ namespace RabbitMqNext
 {
 	using System;
 	using System.Collections.Generic;
-	using System.ServiceModel.PeerResolvers;
+	//using System.ServiceModel.PeerResolvers;
 	using System.Threading;
 	using System.Threading.Tasks;
 

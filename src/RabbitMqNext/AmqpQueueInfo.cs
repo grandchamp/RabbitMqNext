@@ -2,9 +2,9 @@ namespace RabbitMqNext
 {
 	public class AmqpQueueInfo
 	{
-		public string Name { get; internal set; }
-		public uint Messages { get; internal set; }
-		public uint Consumers { get; internal set; }
+		public string Name { get; set; }
+		public uint Messages { get; set; }
+		public uint Consumers { get; set; }
 
 		public override string ToString()
 		{

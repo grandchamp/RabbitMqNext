@@ -5,7 +5,7 @@ namespace RabbitMqNext.Internals.RingBuffer
 	/// limited to small amounts (wont support overflowing over and over)
 	/// </summary>
 	/// TODO: broken when used with ReadGates, needs fix
-	internal struct RingBufferPositionMarker
+	public struct RingBufferPositionMarker
 	{
 		private readonly ByteRingBuffer _ringBuffer;
 		private readonly MultiBodyStreamWrapper _mbStreamWrapper;

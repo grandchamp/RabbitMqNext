@@ -324,7 +324,7 @@
 
 		#endregion
 
-		internal void Disconnected()
+		public void Disconnected()
 		{
 			Interlocked.Exchange(ref _isRecovering, 1);
 
@@ -342,7 +342,7 @@
 			}
 		}
 
-		internal async Task DoRecover(Connection connection)
+		public async Task DoRecover(Connection connection)
 		{
 			try
 			{

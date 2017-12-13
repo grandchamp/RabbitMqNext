@@ -12,7 +12,7 @@ namespace RabbitMqNext
 	{
 		const string LogSource = "RpcAggregateHelper";
 
-		internal class AggState
+		public class AggState
 		{
 			// padding to reduce false sharing problems - still needs perf review
 			// public readonly PaddingForInt32 left;

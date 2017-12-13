@@ -7,7 +7,7 @@ namespace RabbitMqNext.Internals
 	// Consider Buffer.SetByte/GetByte for perf
 	public class InternalBigEndianReader
 	{
-		internal readonly RingBufferStreamAdapter _ringBufferStream;
+		public readonly RingBufferStreamAdapter _ringBufferStream;
 
 		private readonly byte[] _oneByteArray = new byte[1];
 		private readonly byte[] _twoByteArray = new byte[2];
@@ -15,7 +15,7 @@ namespace RabbitMqNext.Internals
 		private readonly byte[] _eightByteArray = new byte[8];
 
 
-		internal InternalBigEndianReader(RingBufferStreamAdapter ringBufferStream)
+		public InternalBigEndianReader(RingBufferStreamAdapter ringBufferStream)
 		{
 			_ringBufferStream = ringBufferStream;
 		}

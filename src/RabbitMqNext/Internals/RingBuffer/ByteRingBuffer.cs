@@ -53,7 +53,7 @@
 	/// ^ when restricted by wrap
 	/// ]]>
 	/// </remarks>
-	internal class ByteRingBuffer : BaseRingBuffer, IDisposable
+	public class ByteRingBuffer : BaseRingBuffer, IDisposable
 	{
 		public const int MinBufferSize = 32;
 		// public const int DefaultBufferSize = 0x100000;  //  1.048.576 1mb
@@ -245,7 +245,7 @@
 //			while(true)
 //			{
 //				int totalRead;
-//				int readPos = this.InternalGetReadyToReadEntries(BufferSize, out totalRead/*, null*/);
+//				int readPos = this.publicGetReadyToReadEntries(BufferSize, out totalRead/*, null*/);
 //
 //				if (_state._resetApplied)
 //				{
@@ -295,7 +295,7 @@
 					// break;
 				}
 
-				// var available = (int)this.InternalGetReadyToReadEntries(offset - totalSkipped);
+				// var available = (int)this.publicGetReadyToReadEntries(offset - totalSkipped);
 				if (available == 0)
 				{
 					// _writeLock.Wait();

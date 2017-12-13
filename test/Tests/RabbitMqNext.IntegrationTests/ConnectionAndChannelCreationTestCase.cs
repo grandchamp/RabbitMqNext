@@ -16,7 +16,7 @@
 
 			var badHostsWithGoodAsLast = new []
 			{
-				"192.168.0.23",
+				"10.1.3.164",
 				_host
 			};
 

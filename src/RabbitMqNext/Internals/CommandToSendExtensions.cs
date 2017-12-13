@@ -1,8 +1,8 @@
 ﻿namespace RabbitMqNext.Internals
 {
-	internal static class CommandToSendExtensions
+	public static class CommandToSendExtensions
 	{
-		internal static string ToDebugInfo(this CommandToSend source)
+		public static string ToDebugInfo(this CommandToSend source)
 		{
 			if (source == null) return string.Empty;
 

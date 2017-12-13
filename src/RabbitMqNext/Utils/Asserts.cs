@@ -4,7 +4,7 @@
 	using System.Runtime.CompilerServices;
 	using Internals.RingBuffer;
 	
-	internal static class Asserts
+	public static class Asserts
 	{
 		[DebuggerStepThrough]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -5,7 +5,7 @@ namespace RabbitMqNext.Internals.RingBuffer
 	using System.Net.Sockets;
 
 
-	internal class SocketStreamWriterAdapter //: Stream
+	public class SocketStreamWriterAdapter //: Stream
 	{
 		private readonly Socket _socket;
 

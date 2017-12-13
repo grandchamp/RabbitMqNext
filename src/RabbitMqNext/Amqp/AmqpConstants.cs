@@ -1,6 +1,6 @@
 namespace RabbitMqNext.Internals
 {
-	internal static class AmqpConstants
+	public static class AmqpConstants
 	{
 		public const int FrameMethod = 1;
 		public const int FrameHeader = 2;

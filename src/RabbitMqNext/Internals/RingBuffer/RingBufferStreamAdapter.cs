@@ -8,9 +8,9 @@
 
 	public class RingBufferStreamAdapter : BaseLightStream
 	{
-		internal readonly ByteRingBuffer _ringBuffer;
+		public readonly ByteRingBuffer _ringBuffer;
 
-		internal RingBufferStreamAdapter(ByteRingBuffer ringBuffer)
+		public RingBufferStreamAdapter(ByteRingBuffer ringBuffer)
 		{
 			_ringBuffer = ringBuffer;
 		}

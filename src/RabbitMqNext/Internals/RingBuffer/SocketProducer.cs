@@ -10,7 +10,7 @@ namespace RabbitMqNext.Internals.RingBuffer
 	/// <remarks>
 	/// Socket must be ready to be consumed
 	/// </remarks>
-	internal class SocketProducer
+	public class SocketProducer
 	{
 		private readonly Socket _socket;
 		private readonly ByteRingBuffer _ringBuffer;
